@@ -1,4 +1,4 @@
-# Mario DQN Trainer & Eval
+# Mario DDQN Trainer & Eval
 
 A simple Deep Q-Learning setup for Super Mario Bros (gym_super_mario_bros + nes-py) with training (`main.py`) and evaluation (`eval_zero.py`). Includes wrappers for frame processing and checkpointing so you can pause/resume runs and track reward history.
 
@@ -6,7 +6,7 @@ A simple Deep Q-Learning setup for Super Mario Bros (gym_super_mario_bros + nes-
 - checkpoints/model_ep_9961_flag.pth
 
 ## Python Version
-- Tested with Python 3.10–3.11 (recommended 3.11).
+- Tested with Python 3.10â€“3.11 (recommended 3.11).
 
 ## Setup
 1) Create/activate a virtual environment (optional but recommended).
