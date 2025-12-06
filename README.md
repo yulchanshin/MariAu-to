@@ -1,9 +1,9 @@
 # Mario DDQN Trainer & Eval
 
-A simple Deep Q-Learning setup for Super Mario Bros (gym_super_mario_bros + nes-py) with training (`main.py`) and evaluation (`eval_zero.py`). Includes wrappers for frame processing and checkpointing so you can pause/resume runs and track reward history.
+A Double Deep Q-Learning setup for Super Mario Bros (gym_super_mario_bros + nes-py) with training (`main.py`) and evaluation (`eval_zero.py`). Includes wrappers for frame processing and checkpointing so you can pause/resume runs and track reward history.
 
 ## Latest Checkpoint
-- checkpoints/model_ep_9961_flag.pth
+- [checkpoints/model_ep_36890_flag.pth](https://github.com/yulchanshin/MariAu-to/blob/main/curr-checkpoint.pth)
 
 ## Python Version
 - Tested with Python 3.10–3.11 (recommended 3.11).
@@ -21,8 +21,8 @@ A simple Deep Q-Learning setup for Super Mario Bros (gym_super_mario_bros + nes-
 
 ## Training
 - Run: `python main.py`
-- Resumes from the latest checkpoint automatically.
-- Logs rewards to `episode_rewards.csv` (includes epsilon per episode).
+- Resumes from the latest checkpoint automatically. (If it's the first time, it will automatically create a folder)
+- Logs rewards to `episode_rewards.csv` (includes epsilon per episode)
 
 ### Epsilon settings (exploration)
 - Training: see `model.py` (`epsilon_start`, `eps_decay`, `eps_min`). Tweaking these changes how quickly the agent exploits vs explores.
