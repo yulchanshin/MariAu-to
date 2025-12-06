@@ -15,9 +15,12 @@ class Model:
         # parameters
         self.lr = 0.00025
         self.gamma = 0.9
-        self.epsilon = 1.0
-        self.eps_decay = 0.99999975
-        self.eps_min = 0.1
+        self.epsilon_start = 0.27
+        self.epsilon = self.epsilon_start
+        # Faster per-episode decay to wind down exploration
+        self.eps_decay = 0.9995
+        # Tighter floor to allow more exploitation
+        self.eps_min = 0.05
         self.replay_buffer_capacity = 100_000
         self.batch_size = 32
         self.sync_network_rate = 10000
@@ -44,7 +47,7 @@ class Model:
             .to(self.online_network.device)
         )
         with torch.no_grad():
-            q_values = self.online_network(observation)
+          q_values = self.online_network(observation)
         return q_values.argmax().item()
 
     def decay_epsilon(self):
@@ -72,8 +75,9 @@ class Model:
         torch.save(self.online_network.state_dict(), path)
 
     def load_model(self, path):
-        self.online_network.load_state_dict(torch.load(path))
-        self.target_network.load_state_dict(torch.load(path))
+        state_dict = torch.load(path, map_location=self.online_network.device)
+        self.online_network.load_state_dict(state_dict)
+        self.target_network.load_state_dict(state_dict)
 
     def learn(self):
         if len(self.replay_buffer) < self.batch_size:
@@ -101,4 +105,3 @@ class Model:
         self.optimizer.step()
 
         self.learn_step_counter += 1
-        self.decay_epsilon()

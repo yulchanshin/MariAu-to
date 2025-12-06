@@ -1,5 +1,5 @@
 import numpy as np
-import gym
+import gymnasium as gym
 from gym import Wrapper
 from gym.wrappers import GrayScaleObservation, ResizeObservation, FrameStack
 
