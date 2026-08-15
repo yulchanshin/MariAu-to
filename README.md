@@ -57,20 +57,24 @@ Python 3.10 or 3.11 is required. `nes-py` does not build cleanly on newer versio
 Each frame of the game is a state $s$, each button combination is an action $a$, and the
 environment returns a scalar reward $r$. `gym-super-mario-bros` defines that reward as
 
-$$r = \Delta x + c + d$$
+$$
+r = \Delta x + c + d
+$$
 
 where $\Delta x$ is how far Mario moved right since the last frame, $c$ is a small negative
 clock penalty that discourages standing still, and $d$ is $-15$ on death. The sum is clipped
 to $[-15, 15]$. Maximizing cumulative reward therefore means moving right quickly without dying.
 
-The goal is the optimal action-value function $Q^*(s, a)$, the expected discounted return
+The goal is the optimal action-value function $Q^{\ast}(s, a)$, the expected discounted return
 from taking action $a$ in state $s$ and acting optimally afterward. It satisfies the Bellman
 optimality equation:
 
-$$Q^*(s, a) = \mathbb{E}\left[ r + \gamma \max_{a'} Q^*(s', a') \right]$$
+$$
+Q^{\ast}(s, a) = \mathbb{E}\left[ r + \gamma \max_{a'} Q^{\ast}(s', a') \right]
+$$
 
 Tabular Q-learning cannot be used here because the state space is the set of all possible
-screens. Instead a neural network $Q_\theta$ approximates $Q^*$.
+screens. Instead a neural network $Q_\theta$ approximates $Q^{\ast}$.
 
 ### Observation preprocessing
 
@@ -114,11 +118,15 @@ and a target network $Q_{\theta^-}$ that is a frozen snapshot of the online weig
 minibatch of transitions $(s, a, r, s', \text{done})$ sampled from replay, the regression
 target is
 
-$$y = r + \gamma \, (1 - \text{done}) \max_{a'} Q_{\theta^-}(s', a')$$
+$$
+y = r + \gamma \, (1 - \text{done}) \max_{a'} Q_{\theta^-}(s', a')
+$$
 
 and the loss is the mean squared error against the online network's prediction:
 
-$$L(\theta) = \left( y - Q_\theta(s, a) \right)^2$$
+$$
+L(\theta) = \left( y - Q_\theta(s, a) \right)^2
+$$
 
 The $(1 - \text{done})$ factor zeroes the bootstrap on terminal states, where there is no
 future return to estimate.
@@ -141,7 +149,9 @@ lets each transition contribute to learning more than once.
 Action selection is $\varepsilon$-greedy: with probability $\varepsilon$ pick uniformly at
 random, otherwise take $\arg\max_a Q_\theta(s, a)$. After each episode,
 
-$$\varepsilon \leftarrow \max(\varepsilon_{\min}, \lambda \varepsilon)$$
+$$
+\varepsilon \leftarrow \max(\varepsilon_{\min}, \lambda \varepsilon)
+$$
 
 which is geometric decay toward a floor. The floor is not zero on purpose. A purely greedy
 policy is deterministic, and a deterministic policy in a deterministic level can loop
